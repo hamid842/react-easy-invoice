@@ -72,14 +72,19 @@
 // type DispatchProps = typeof mapDispatchToProps;
 
 // export default connect(mapStateToProps, mapDispatchToProps)(hot(module)(App));
+import './app.scss';
 import React from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Navigation from 'app/shared/layout/header/Navigation';
+import Login from 'app/modules/login/Login';
 
 const App = () => {
   return (
     <Router>
-      <Navigation />
+      <Switch>
+        <Route exact path="/dashboard" component={Navigation} />
+        <Route exact path="/" component={Login} />
+      </Switch>
     </Router>
   );
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles, useTheme, Theme } from '@material-ui/core/styles';
 import {
   Grid,
   Button,
@@ -24,7 +24,7 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 const drawerWidth = 240;
 
-const useStyles = makeStyles((theme: any) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   root: {
     display: 'flex'
   },
@@ -100,7 +100,7 @@ const useStyles = makeStyles((theme: any) => ({
   }
 }));
 
-export default function MiniDrawer() {
+export default function Navigation() {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -137,9 +137,9 @@ export default function MiniDrawer() {
                 <MenuIcon />
               </IconButton>
             </Grid>
-            <Grid xs={9}>
+            <Grid item xs={9}>
               <Box component="span">
-                <img src="content/images/logo1.png" alt="Logo" width="170px" height="80px" />
+                <img src="content/images/logo1.png" alt="Logo" width="160px" height="80px" />
               </Box>
             </Grid>
             <Grid item xs={2}>
