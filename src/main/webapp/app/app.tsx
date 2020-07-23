@@ -75,7 +75,7 @@
 import './app.scss';
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Navigation from 'app/shared/layout/header/Navigation';
+import Layout from 'app/shared/layout/header/Navigation';
 import Login from 'app/modules/login/Login';
 import ViewSubscriptions from 'app/modules/pages/subscriptions/ViewSubscriptions';
 import ViewInvoices from 'app/modules/pages/invoices/ViewInvoices';
@@ -84,13 +84,14 @@ import CreateInvoices from 'app/modules/pages/invoices/CreateInvoices';
 const App = () => {
   return (
     <Router>
-      <Route path="/dashboard" component={Navigation} />
-      <Switch>
-        <Route exact path="/" component={Login} />
-        <Route exact path="/dashboard/view-subscriptions" component={ViewSubscriptions} />
-        <Route exact path="/dashboard/view-invoices" component={ViewInvoices} />
-        <Route exact path="/dashboard/create-invoices" component={CreateInvoices} />
-      </Switch>
+      <Layout>
+        <Switch>
+          <Route exact path="/" component={Login} />
+          <Route exact path="/view-subscriptions" component={ViewSubscriptions} />
+          <Route exact path="/view-invoices" component={ViewInvoices} />
+          <Route exact path="/create-invoices" component={CreateInvoices} />
+        </Switch>
+      </Layout>
     </Router>
   );
 };

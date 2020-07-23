@@ -12,7 +12,8 @@ import {
   Receipt,
   Create,
   GroupWork,
-  LooksOne
+  LooksOne,
+  CreditCard
 } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -35,9 +36,10 @@ export default function Menu(props: any) {
   const [openInvoices, setOpenInvoices] = React.useState(false);
   const [openGroup, setOpenGroup] = React.useState(false);
   const [openUnit, setOpenUnit] = React.useState(false);
-  const [openManagment, setOpenManagment] = React.useState(false);
+  const [openManagement, setOpenManagement] = React.useState(false);
+  const [openBiller, setOpenBiller] = React.useState(false);
 
-  const { handleDrawerOpen } = props;
+  const { handleDrawerOpen, open } = props;
 
   return (
     <>
@@ -51,7 +53,7 @@ export default function Menu(props: any) {
           {openSubscriptions ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
         <Collapse in={openSubscriptions} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding onClick={() => history.push('/dashboard/view-subscriptions')}>
+          <List component="div" disablePadding onClick={() => history.push('/view-subscriptions')}>
             <ListItem button className={classes.nested}>
               <ListItemIcon>
                 <Pageview style={{ color: 'white' }} />
@@ -70,13 +72,13 @@ export default function Menu(props: any) {
         </ListItem>
         <Collapse in={openInvoices} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
-            <ListItem button className={classes.nested} onClick={() => history.push('/dashboard/view-invoices')}>
+            <ListItem button className={classes.nested} onClick={() => history.push({ pathname: '/view-invoices', state: { open } })}>
               <ListItemIcon>
                 <Pageview style={{ color: 'white' }} />
               </ListItemIcon>
               <ListItemText primary="View Invoices" />
             </ListItem>
-            <ListItem button className={classes.nested} onClick={() => history.push('/dashboard/create-invoices')}>
+            <ListItem button className={classes.nested} onClick={() => history.push('/create-invoices')}>
               <ListItemIcon>
                 <Create style={{ color: 'white' }} />
               </ListItemIcon>
@@ -132,15 +134,39 @@ export default function Menu(props: any) {
             </ListItem>
           </List>
         </Collapse>
-        {/* User Managment */}
-        <ListItem button onClick={() => setOpenManagment(!openManagment)}>
+        {/* Biller Management */}
+        <ListItem button onClick={() => setOpenBiller(!openBiller)}>
+          <ListItemIcon>
+            <CreditCard style={{ color: 'white' }} onClick={handleDrawerOpen} />
+          </ListItemIcon>
+          <ListItemText primary="Biller Management" />
+          {openBiller ? <ExpandLess /> : <ExpandMore />}
+        </ListItem>
+        <Collapse in={openBiller} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            <ListItem button className={classes.nested}>
+              <ListItemIcon>
+                <Pageview style={{ color: 'white' }} />
+              </ListItemIcon>
+              <ListItemText primary="View Billers" />
+            </ListItem>
+            <ListItem button className={classes.nested}>
+              <ListItemIcon>
+                <Create style={{ color: 'white' }} />
+              </ListItemIcon>
+              <ListItemText primary="Register Biller" />
+            </ListItem>
+          </List>
+        </Collapse>
+        {/* User Management */}
+        <ListItem button onClick={() => setOpenManagement(!openManagement)}>
           <ListItemIcon>
             <RecentActors style={{ color: 'white' }} onClick={handleDrawerOpen} />
           </ListItemIcon>
           <ListItemText primary="User Management" />
-          {openManagment ? <ExpandLess /> : <ExpandMore />}
+          {openManagement ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
-        <Collapse in={openManagment} timeout="auto" unmountOnExit>
+        <Collapse in={openManagement} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
             <ListItem button className={classes.nested}>
               <ListItemIcon>

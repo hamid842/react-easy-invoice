@@ -11,7 +11,8 @@ const drawerWidth = 270;
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    display: 'flex'
+    display: 'flex',
+    flexGrow: 1
   },
   appBar: {
     background: 'linear-gradient(#00ddc2,#008272)',
@@ -90,7 +91,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-export default function Navigation() {
+export default function Navigation(props: any) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -102,6 +103,8 @@ export default function Navigation() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  const { children } = props;
 
   return (
     <div className={classes.root}>
@@ -160,10 +163,11 @@ export default function Navigation() {
           </IconButton>
         </div>
         <Divider variant="middle" classes={{ root: classes.dividerColor }} />
-        <Menu handleDrawerOpen={handleDrawerOpen} />
+        <Menu handleDrawerOpen={handleDrawerOpen} open={open} />
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
+        {children}
       </main>
     </div>
   );

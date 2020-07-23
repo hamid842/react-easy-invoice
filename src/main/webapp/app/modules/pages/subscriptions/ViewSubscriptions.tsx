@@ -1,44 +1,20 @@
 import React from 'react';
 import clsx from 'clsx';
-import { makeStyles, useTheme, Theme } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
+import { useHistory } from 'react-router-dom';
+import { CssBaseline } from '@material-ui/core';
 
 const drawerWidth = 270;
 
-const open = localStorage.getItem('open-nav');
-
-const useStyles = makeStyles((theme: Theme) => ({
-  root: {
-    display: 'flex'
-  },
-  appBar: {
-    justifyContent: 'center',
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
-    })
-  },
-  appBarShift: {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen
-    })
-  }
-}));
+const useStyles = makeStyles((theme: Theme) => ({}));
 
 const ViewSubscriptions = () => {
   const classes = useStyles();
+
   return (
-    <div className={classes.root}>
-      <div
-        className={clsx(classes.appBar, {
-          [classes.appBarShift]: open
-        })}
-      >
-        hello from subscriptions
-      </div>
+    <div>
+      {/* <CssBaseline /> */}
+      <div>hello from subscriptions</div>
     </div>
   );
 };
