@@ -1,5 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
+import { useHistory } from 'react-router-dom';
 import { makeStyles, useTheme, Theme } from '@material-ui/core/styles';
 import { Grid, Button, Box, Drawer, AppBar, Toolbar, CssBaseline, Typography, Divider, IconButton } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -92,6 +93,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export default function Navigation(props: any) {
+  const history = useHistory();
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -136,7 +138,7 @@ export default function Navigation(props: any) {
               </Box>
             </Grid>
             <Grid item xs={2}>
-              <Button color="inherit" className={classes.logout}>
+              <Button color="inherit" className={classes.logout} onClick={() => history.push('/')}>
                 Logout
               </Button>
             </Grid>

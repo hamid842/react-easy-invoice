@@ -80,18 +80,35 @@ import Login from 'app/modules/login/Login';
 import ViewSubscriptions from 'app/modules/pages/subscriptions/ViewSubscriptions';
 import ViewInvoices from 'app/modules/pages/invoices/ViewInvoices';
 import CreateInvoices from 'app/modules/pages/invoices/CreateInvoices';
+import RegisterBiller from 'app/modules/pages/biller-management/RegisterBiller';
+import ViewBillers from 'app/modules/pages/biller-management/ViewBillers';
+import ViewServiceGroups from './modules/pages/service-group/ViewServiceGroups';
+import GenerateServiceGroups from './modules/pages/service-group/GenerateServiceGroups';
+import GenerateServiceUnits from './modules/pages/service-unit/GenerateServiceUnits';
+import ViewServiceUnits from './modules/pages/service-unit/ViewServiceUnits';
+import ViewUserGroups from './modules/pages/user-management/ViewUserGroups';
+import ViewUsers from './modules/pages/user-management/ViewUsers';
 
 const App = () => {
   return (
     <Router>
-      <Layout>
-        <Switch>
-          <Route exact path="/" component={Login} />
-          <Route exact path="/view-subscriptions" component={ViewSubscriptions} />
-          <Route exact path="/view-invoices" component={ViewInvoices} />
-          <Route exact path="/create-invoices" component={CreateInvoices} />
-        </Switch>
-      </Layout>
+      <Switch>
+        <Route exact path="/" component={Login} />
+        <Route exact path="/dashboard" component={Layout} />
+        <Layout>
+          <Route exact path="/dashboard/view-subscriptions" component={ViewSubscriptions} />
+          <Route exact path="/dashboard/view-invoices" component={ViewInvoices} />
+          <Route exact path="/dashboard/create-invoices" component={CreateInvoices} />
+          <Route exact path="/dashboard/register-biller" component={RegisterBiller} />
+          <Route exact path="/dashboard/view-billers" component={ViewBillers} />
+          <Route exact path="/dashboard/view-service-groups" component={ViewServiceGroups} />
+          <Route exact path="/dashboard/generate-service-groups" component={GenerateServiceGroups} />
+          <Route exact path="/dashboard/generate-service-units" component={GenerateServiceUnits} />
+          <Route exact path="/dashboard/view-service-units" component={ViewServiceUnits} />
+          <Route exact path="/dashboard/view-user-groups" component={ViewUserGroups} />
+          <Route exact path="/dashboard/view-users" component={ViewUsers} />
+        </Layout>
+      </Switch>
     </Router>
   );
 };

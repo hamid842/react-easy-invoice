@@ -41,7 +41,7 @@ export default function Login() {
   return (
     <div className={classes.main}>
       <Grid container className={classes.container} justify="center">
-        <Grid item className={classes.logo} justify="center">
+        <Grid item className={classes.logo}>
           <img src="content/images/logo1.png" alt="Logo" width="180px" height="100px" />
         </Grid>
         <Grid item xs={12} className={classes.text}>

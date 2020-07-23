@@ -53,7 +53,7 @@ export default function Menu(props: any) {
           {openSubscriptions ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
         <Collapse in={openSubscriptions} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding onClick={() => history.push('/view-subscriptions')}>
+          <List component="div" disablePadding onClick={() => history.push('/dashboard/view-subscriptions')}>
             <ListItem button className={classes.nested}>
               <ListItemIcon>
                 <Pageview style={{ color: 'white' }} />
@@ -72,13 +72,13 @@ export default function Menu(props: any) {
         </ListItem>
         <Collapse in={openInvoices} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
-            <ListItem button className={classes.nested} onClick={() => history.push({ pathname: '/view-invoices', state: { open } })}>
+            <ListItem button className={classes.nested} onClick={() => history.push('/dashboard/view-invoices')}>
               <ListItemIcon>
                 <Pageview style={{ color: 'white' }} />
               </ListItemIcon>
               <ListItemText primary="View Invoices" />
             </ListItem>
-            <ListItem button className={classes.nested} onClick={() => history.push('/create-invoices')}>
+            <ListItem button className={classes.nested} onClick={() => history.push('/dashboard/create-invoices')}>
               <ListItemIcon>
                 <Create style={{ color: 'white' }} />
               </ListItemIcon>
@@ -96,13 +96,13 @@ export default function Menu(props: any) {
         </ListItem>
         <Collapse in={openGroup} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
-            <ListItem button className={classes.nested}>
+            <ListItem button className={classes.nested} onClick={() => history.push('/dashboard/view-service-groups')}>
               <ListItemIcon>
                 <Pageview style={{ color: 'white' }} />
               </ListItemIcon>
               <ListItemText primary="View Service Groups" />
             </ListItem>
-            <ListItem button className={classes.nested}>
+            <ListItem button className={classes.nested} onClick={() => history.push('/dashboard/generate-service-groups')}>
               <ListItemIcon>
                 <Create style={{ color: 'white' }} />
               </ListItemIcon>
@@ -120,13 +120,13 @@ export default function Menu(props: any) {
         </ListItem>
         <Collapse in={openUnit} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
-            <ListItem button className={classes.nested}>
+            <ListItem button className={classes.nested} onClick={() => history.push('/dashboard/view-service-units')}>
               <ListItemIcon>
                 <Pageview style={{ color: 'white' }} />
               </ListItemIcon>
               <ListItemText primary="View Service Units" />
             </ListItem>
-            <ListItem button className={classes.nested}>
+            <ListItem button className={classes.nested} onClick={() => history.push('/dashboard/generate-service-units')}>
               <ListItemIcon>
                 <Create style={{ color: 'white' }} />
               </ListItemIcon>
@@ -144,13 +144,13 @@ export default function Menu(props: any) {
         </ListItem>
         <Collapse in={openBiller} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
-            <ListItem button className={classes.nested}>
+            <ListItem button className={classes.nested} onClick={() => history.push('/dashboard/view-billers')}>
               <ListItemIcon>
                 <Pageview style={{ color: 'white' }} />
               </ListItemIcon>
               <ListItemText primary="View Billers" />
             </ListItem>
-            <ListItem button className={classes.nested}>
+            <ListItem button className={classes.nested} onClick={() => history.push('/dashboard/register-biller')}>
               <ListItemIcon>
                 <Create style={{ color: 'white' }} />
               </ListItemIcon>
@@ -168,13 +168,13 @@ export default function Menu(props: any) {
         </ListItem>
         <Collapse in={openManagement} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
-            <ListItem button className={classes.nested}>
+            <ListItem button className={classes.nested} onClick={() => history.push('/dashboard/view-users')}>
               <ListItemIcon>
                 <Pageview style={{ color: 'white' }} />
               </ListItemIcon>
               <ListItemText primary="View Users" />
             </ListItem>
-            <ListItem button className={classes.nested}>
+            <ListItem button className={classes.nested} onClick={() => history.push('/dashboard/view-user-groups')}>
               <ListItemIcon>
                 <Pageview style={{ color: 'white' }} />
               </ListItemIcon>
@@ -183,7 +183,7 @@ export default function Menu(props: any) {
           </List>
         </Collapse>
         {/* Logout */}
-        <ListItem button>
+        <ListItem button onClick={() => history.push('/')}>
           <ListItemIcon>
             <ExitToApp style={{ color: 'white' }} onClick={handleDrawerOpen} />
           </ListItemIcon>

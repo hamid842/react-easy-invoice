@@ -1,7 +1,14 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import qs from 'qs';
+import axios from 'axios';
 import { makeStyles, useTheme, Theme, withStyles } from '@material-ui/core/styles';
 import { TextField, Button, Grid, InputAdornment, IconButton } from '@material-ui/core';
 import { Person, Lock, VisibilityOff, Visibility } from '@material-ui/icons';
+
+// Endpoints
+const loginEndpoint = 'https://gateway.m1payall.com/einvoice/api/user-info/login';
 
 const CssTextField = withStyles({
   root: {
@@ -23,17 +30,14 @@ const ColorButton = withStyles((theme: Theme) => ({
   }
 }))(Button);
 
-const useStyles = makeStyles((theme: Theme) => ({}));
-
 export default function LoginForm() {
+  const history = useHistory();
   const [userInfo, setUserInfo] = useState({
     userName: '',
     password: '',
-    showPassword: false
+    showPassword: false,
+    error: ''
   });
-
-  const classes = useStyles();
-  const theme = useTheme();
 
   const handleClickShowPassword = () => {
     setUserInfo({ ...userInfo, showPassword: !userInfo.showPassword });
@@ -41,6 +45,23 @@ export default function LoginForm() {
 
   const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
+  };
+
+  const handleLogin = async () => {
+    const requestBody = {
+      phoneNumber: userInfo.userName,
+      password: userInfo.password
+    };
+    await axios
+      .post(loginEndpoint, requestBody, { headers: { 'Content-Type': 'application/json' } })
+      .then(response => {
+        const successResponse = response.status === 200 || 201;
+        successResponse ? history.push('/dashboard') : toast.error('Something is wrong');
+      })
+      .catch(error => {
+        const message = error.response.data.error;
+        toast.error(message);
+      });
   };
 
   return (
@@ -55,6 +76,7 @@ export default function LoginForm() {
               <Grid item>
                 <CssTextField
                   required
+                  value={userInfo.userName}
                   id="custom-css-standard-password"
                   label="Username"
                   onChange={e => setUserInfo({ ...userInfo, userName: e.target.value })}
@@ -63,6 +85,7 @@ export default function LoginForm() {
               </Grid>
             </Grid>
           </Grid>
+
           <Grid item xs={12}>
             <Grid container spacing={1} alignItems="flex-end" justify="center">
               <Grid item>
@@ -94,7 +117,12 @@ export default function LoginForm() {
             </Grid>
           </Grid>
           <Grid item>
-            <ColorButton variant="contained" color="primary">
+            <ColorButton
+              variant="contained"
+              color="primary"
+              disabled={userInfo.userName === '' || userInfo.password === ''}
+              onClick={handleLogin}
+            >
               LOGIN
             </ColorButton>
           </Grid>
