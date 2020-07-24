@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import qs from 'qs';
 import axios from 'axios';
-import { makeStyles, useTheme, Theme, withStyles } from '@material-ui/core/styles';
-import { TextField, Button, Grid, InputAdornment, IconButton } from '@material-ui/core';
+import { Theme, withStyles } from '@material-ui/core/styles';
+import { TextField, Button, Grid, InputAdornment, IconButton, CircularProgress } from '@material-ui/core';
 import { Person, Lock, VisibilityOff, Visibility } from '@material-ui/icons';
+import Alert from '@material-ui/lab/Alert';
 
 // Endpoints
 const loginEndpoint = 'https://gateway.m1payall.com/einvoice/api/user-info/login';
@@ -36,7 +36,8 @@ export default function LoginForm() {
     userName: '',
     password: '',
     showPassword: false,
-    error: ''
+    error: '',
+    loading: false
   });
 
   const handleClickShowPassword = () => {
@@ -48,6 +49,7 @@ export default function LoginForm() {
   };
 
   const handleLogin = async () => {
+    setUserInfo({ ...userInfo, loading: true });
     const requestBody = {
       phoneNumber: userInfo.userName,
       password: userInfo.password
@@ -55,11 +57,16 @@ export default function LoginForm() {
     await axios
       .post(loginEndpoint, requestBody, { headers: { 'Content-Type': 'application/json' } })
       .then(response => {
+        setUserInfo({ ...userInfo, loading: false });
         const successResponse = response.status === 200 || 201;
-        successResponse ? history.push('/dashboard') : toast.error('Something is wrong');
+        if (successResponse) {
+          history.push('/dashboard');
+          toast.success("You're logged in!");
+        }
       })
       .catch(error => {
         const message = error.response.data.error;
+        setUserInfo({ ...userInfo, error: message });
         toast.error(message);
       });
   };
@@ -67,7 +74,7 @@ export default function LoginForm() {
   return (
     <>
       <form noValidate={false}>
-        <Grid container spacing={5} justify="center">
+        <Grid container spacing={userInfo.error ? 4 : 5} justify="center">
           <Grid item xs={12}>
             <Grid container spacing={1} alignItems="flex-end" justify="center">
               <Grid item>
@@ -116,6 +123,9 @@ export default function LoginForm() {
               </Grid>
             </Grid>
           </Grid>
+          <Grid item style={{ color: 'red', textAlign: 'center' }} xs={12}>
+            {userInfo.error}
+          </Grid>
           <Grid item>
             <ColorButton
               variant="contained"
@@ -123,7 +133,8 @@ export default function LoginForm() {
               disabled={userInfo.userName === '' || userInfo.password === ''}
               onClick={handleLogin}
             >
-              LOGIN
+              {userInfo.loading && <CircularProgress size={26} color="inherit" />}
+              {!userInfo.loading && 'LOGIN'}
             </ColorButton>
           </Grid>
         </Grid>

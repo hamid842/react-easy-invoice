@@ -20,11 +20,12 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   box: {
     width: '350px',
-    height: '280px',
+    height: '300px',
     background: 'white',
     borderRadius: '10px',
     margin: 'auto',
-    alignItems: 'center'
+    alignItems: 'center',
+    position: 'relative'
   },
   text: {
     textAlign: 'center',

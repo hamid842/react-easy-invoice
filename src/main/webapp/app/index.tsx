@@ -40,6 +40,8 @@
 // render(AppComponent);
 import React from 'react';
 import ReactDom from 'react-dom';
+import 'react-toastify/dist/ReactToastify.css';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 import App from 'app/app';
 
