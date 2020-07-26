@@ -1,5 +1,5 @@
 import './app.scss';
-import React from 'react';
+import React, { FC } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Layout from 'app/shared/layout/header/Navigation';
 import Login from 'app/modules/login/Login';
@@ -15,7 +15,8 @@ import ViewServiceUnits from './modules/pages/service-unit/ViewServiceUnits';
 import ViewUserGroups from './modules/pages/user-management/ViewUserGroups';
 import ViewUsers from './modules/pages/user-management/ViewUsers';
 import { makeStyles } from '@material-ui/core/styles';
-import LinearProgress from '@material-ui/core/LinearProgress';
+import 'react-toastify/dist/ReactToastify.css';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 const useStyles = makeStyles({
   root: {
@@ -23,36 +24,7 @@ const useStyles = makeStyles({
   }
 });
 
-const App = () => {
-  const classes = useStyles();
-  const [progress, setProgress] = React.useState(0);
-  const [buffer, setBuffer] = React.useState(10);
-
-  const progressRef = React.useRef(() => {});
-  React.useEffect(() => {
-    progressRef.current = () => {
-      if (progress > 100) {
-        setProgress(0);
-        setBuffer(10);
-      } else {
-        const diff = Math.random() * 10;
-        const diff2 = Math.random() * 10;
-        setProgress(progress + diff);
-        setBuffer(progress + diff + diff2);
-      }
-    };
-  });
-
-  React.useEffect(() => {
-    const timer = setInterval(() => {
-      progressRef.current();
-    }, 500);
-
-    return () => {
-      clearInterval(timer);
-      <LinearProgress variant="buffer" value={progress} valueBuffer={buffer} />;
-    };
-  }, []);
+const App: FC = () => {
   return (
     <Router>
       <Switch>

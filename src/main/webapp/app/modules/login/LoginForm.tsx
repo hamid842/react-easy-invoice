@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { FC, ChangeEvent, useState } from 'react';
+import { observer } from 'mobx-react-lite';
+import { useStore } from 'app/mobx/stores/store';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
@@ -6,9 +8,7 @@ import { Theme, withStyles } from '@material-ui/core/styles';
 import { TextField, Button, Grid, InputAdornment, IconButton, CircularProgress } from '@material-ui/core';
 import { Person, Lock, VisibilityOff, Visibility } from '@material-ui/icons';
 import Alert from '@material-ui/lab/Alert';
-
-// Endpoints
-const loginEndpoint = 'https://gateway.m1payall.com/einvoice/api/user-info/login';
+import Login from './Login';
 
 const CssTextField = withStyles({
   root: {
@@ -30,15 +30,19 @@ const ColorButton = withStyles((theme: Theme) => ({
   }
 }))(Button);
 
-export default function LoginForm() {
+const LoginForm: FC = observer(() => {
+  const { loginStore } = useStore();
   const history = useHistory();
+  const [loading, setLoading] = useState(false);
   const [userInfo, setUserInfo] = useState({
     userName: '',
     password: '',
-    showPassword: false,
-    error: '',
-    loading: false
+    showPassword: false
   });
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    setUserInfo({ ...userInfo, [e.target.name]: e.target.value });
+  };
 
   const handleClickShowPassword = () => {
     setUserInfo({ ...userInfo, showPassword: !userInfo.showPassword });
@@ -49,32 +53,17 @@ export default function LoginForm() {
   };
 
   const handleLogin = async () => {
-    setUserInfo({ ...userInfo, loading: true });
-    const requestBody = {
-      phoneNumber: userInfo.userName,
-      password: userInfo.password
-    };
-    await axios
-      .post(loginEndpoint, requestBody, { headers: { 'Content-Type': 'application/json' } })
-      .then(response => {
-        setUserInfo({ ...userInfo, loading: false });
-        const successResponse = response.status === 200 || 201;
-        if (successResponse) {
-          history.push('/dashboard');
-          toast.success("You're logged in!");
-        }
-      })
-      .catch(error => {
-        const message = error.response.data.error;
-        setUserInfo({ ...userInfo, error: message });
-        toast.error(message);
-      });
+    setLoading(true);
+    await loginStore.login(userInfo.userName, userInfo.password);
+    if (loginStore.loggedInUser.responseStatus === 200) {
+      history.push('/dashboard');
+    }
+    setLoading(false);
   };
-
   return (
     <>
       <form noValidate={false}>
-        <Grid container spacing={userInfo.error ? 4 : 5} justify="center">
+        <Grid container spacing={loginStore.loggedInUser.error ? 4 : 5} justify="center">
           <Grid item xs={12}>
             <Grid container spacing={1} alignItems="flex-end" justify="center">
               <Grid item>
@@ -83,10 +72,11 @@ export default function LoginForm() {
               <Grid item>
                 <CssTextField
                   required
+                  name="userName"
                   value={userInfo.userName}
                   id="custom-css-standard-password"
                   label="Username"
-                  onChange={e => setUserInfo({ ...userInfo, userName: e.target.value })}
+                  onChange={handleChange}
                   style={{ width: '250px' }}
                 />
               </Grid>
@@ -101,11 +91,12 @@ export default function LoginForm() {
               <Grid item>
                 <CssTextField
                   required
+                  name="password"
                   type={userInfo.showPassword ? 'text' : 'password'}
                   value={userInfo.password}
                   id="custom-css-standard-password-input"
                   label="Password"
-                  onChange={e => setUserInfo({ ...userInfo, password: e.target.value })}
+                  onChange={handleChange}
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
@@ -124,7 +115,7 @@ export default function LoginForm() {
             </Grid>
           </Grid>
           <Grid item style={{ color: 'red', textAlign: 'center' }} xs={12}>
-            {userInfo.error}
+            {loginStore.loggedInUser.error}
           </Grid>
           <Grid item>
             <ColorButton
@@ -133,12 +124,14 @@ export default function LoginForm() {
               disabled={userInfo.userName === '' || userInfo.password === ''}
               onClick={handleLogin}
             >
-              {userInfo.loading && <CircularProgress size={26} color="inherit" />}
-              {!userInfo.loading && 'LOGIN'}
+              {loading && <CircularProgress size={26} color="inherit" />}
+              {!loading && 'LOGIN'}
             </ColorButton>
           </Grid>
         </Grid>
       </form>
     </>
   );
-}
+});
+
+export default LoginForm;

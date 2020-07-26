@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useStore } from 'app/mobx/stores/store';
+import { observer } from 'mobx-react-lite';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { List, ListItem, ListItemIcon, ListItemText, Collapse } from '@material-ui/core';
 import {
@@ -15,6 +17,7 @@ import {
   LooksOne,
   CreditCard
 } from '@material-ui/icons';
+import LoginStore from 'app/mobx/stores/LoginStore';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -29,7 +32,8 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function Menu(props: any) {
+const MenuLists: FC = observer((props: any) => {
+  const { loginStore } = useStore();
   const classes = useStyles();
   const history = useHistory();
   const [openSubscriptions, setOpenSubscriptions] = React.useState(false);
@@ -39,7 +43,7 @@ export default function Menu(props: any) {
   const [openManagement, setOpenManagement] = React.useState(false);
   const [openBiller, setOpenBiller] = React.useState(false);
 
-  const { handleDrawerOpen, open } = props;
+  const { handleDrawerOpen } = props;
 
   return (
     <>
@@ -159,7 +163,11 @@ export default function Menu(props: any) {
           </List>
         </Collapse>
         {/* User Management */}
-        <ListItem button onClick={() => setOpenManagement(!openManagement)}>
+        <ListItem
+          button
+          onClick={() => setOpenManagement(!openManagement)}
+          disabled={loginStore.loggedInUser.role === 'ROLE_BILLER' ? false : true}
+        >
           <ListItemIcon>
             <RecentActors style={{ color: 'white' }} onClick={handleDrawerOpen} />
           </ListItemIcon>
@@ -192,4 +200,6 @@ export default function Menu(props: any) {
       </List>
     </>
   );
-}
+});
+
+export default MenuLists;

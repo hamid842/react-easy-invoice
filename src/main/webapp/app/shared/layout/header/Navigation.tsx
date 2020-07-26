@@ -6,7 +6,7 @@ import { Grid, Button, Box, Drawer, AppBar, Toolbar, CssBaseline, Typography, Di
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import Menu from './Menu';
+import MenuLists from './MenuLists';
 
 const drawerWidth = 270;
 
@@ -165,7 +165,7 @@ export default function Navigation(props: any) {
           </IconButton>
         </div>
         <Divider variant="middle" classes={{ root: classes.dividerColor }} />
-        <Menu handleDrawerOpen={handleDrawerOpen} open={open} />
+        <MenuLists handleDrawerOpen={handleDrawerOpen} />
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
