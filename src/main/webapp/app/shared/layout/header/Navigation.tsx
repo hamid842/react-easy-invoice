@@ -3,6 +3,8 @@ import clsx from 'clsx';
 import { useHistory } from 'react-router-dom';
 import { makeStyles, useTheme, Theme } from '@material-ui/core/styles';
 import { Grid, Button, Box, Drawer, AppBar, Toolbar, CssBaseline, Typography, Divider, IconButton } from '@material-ui/core';
+import { connect } from 'react-redux';
+import { IRootState } from 'app/shared/reducers';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
@@ -92,7 +94,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-export default function Navigation(props: any) {
+export type INavProps = StateProps;
+
+const Navigation = (props: any) => {
   const history = useHistory();
   const classes = useStyles();
   const theme = useTheme();
@@ -173,4 +177,11 @@ export default function Navigation(props: any) {
       </main>
     </div>
   );
-}
+};
+const mapStateToProps = (storeState: IRootState) => ({
+  account: storeState.authentication.account
+});
+
+type StateProps = ReturnType<typeof mapStateToProps>;
+
+export default connect(mapStateToProps, null)(Navigation);

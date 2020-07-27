@@ -1,6 +1,7 @@
 import './app.scss';
 import React, { FC } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
 import Layout from 'app/shared/layout/header/Navigation';
 import Login from 'app/modules/login/Login';
 import ViewSubscriptions from 'app/modules/pages/subscriptions/ViewSubscriptions';
@@ -27,6 +28,7 @@ const useStyles = makeStyles({
 const App: FC = () => {
   return (
     <Router>
+      <ToastContainer position={toast.POSITION.TOP_LEFT} className="toastify-container" toastClassName="toastify-toast" />
       <Switch>
         <Route exact path="/" component={Login} />
         <Route exact path="/dashboard" component={Layout} />

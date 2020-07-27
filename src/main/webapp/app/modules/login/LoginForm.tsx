@@ -1,14 +1,12 @@
-import React, { FC, ChangeEvent, useState } from 'react';
-import { observer } from 'mobx-react-lite';
-import { useStore } from 'app/mobx/stores/store';
+import React, { ChangeEvent, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import axios from 'axios';
 import { Theme, withStyles } from '@material-ui/core/styles';
 import { TextField, Button, Grid, InputAdornment, IconButton, CircularProgress } from '@material-ui/core';
 import { Person, Lock, VisibilityOff, Visibility } from '@material-ui/icons';
-import Alert from '@material-ui/lab/Alert';
-import Login from './Login';
+import { connect } from 'react-redux';
+import { login } from 'app/shared/reducers/authentication';
+import { IRootState } from 'app/shared/reducers';
 
 const CssTextField = withStyles({
   root: {
@@ -30,10 +28,12 @@ const ColorButton = withStyles((theme: Theme) => ({
   }
 }))(Button);
 
-const LoginForm: FC = observer(() => {
-  const { loginStore } = useStore();
+export interface ILoginProps extends StateProps, DispatchProps {}
+
+const LoginForm = (props: ILoginProps) => {
+  // const { loginStore } = useStore();
+  const { account, isAuthenticated, loading, errorMessage } = props;
   const history = useHistory();
-  const [loading, setLoading] = useState(false);
   const [userInfo, setUserInfo] = useState({
     userName: '',
     password: '',
@@ -52,18 +52,15 @@ const LoginForm: FC = observer(() => {
     event.preventDefault();
   };
 
-  const handleLogin = async () => {
-    setLoading(true);
-    await loginStore.login(userInfo.userName, userInfo.password);
-    if (loginStore.loggedInUser.responseStatus === 200) {
-      history.push('/dashboard');
-    }
-    setLoading(false);
+  const handleLogin = () => {
+    props.login(userInfo.userName, userInfo.password);
+    // eslint-disable-next-line no-console
+    console.log(isAuthenticated);
   };
   return (
     <>
       <form noValidate={false}>
-        <Grid container spacing={loginStore.loggedInUser.error ? 4 : 5} justify="center">
+        <Grid container spacing={errorMessage ? 4 : 5} justify="center">
           <Grid item xs={12}>
             <Grid container spacing={1} alignItems="flex-end" justify="center">
               <Grid item>
@@ -115,7 +112,7 @@ const LoginForm: FC = observer(() => {
             </Grid>
           </Grid>
           <Grid item style={{ color: 'red', textAlign: 'center' }} xs={12}>
-            {loginStore.loggedInUser.error}
+            {errorMessage}
           </Grid>
           <Grid item>
             <ColorButton
@@ -132,6 +129,18 @@ const LoginForm: FC = observer(() => {
       </form>
     </>
   );
+};
+
+const mapStateToProps = ({ authentication }: IRootState) => ({
+  loading: authentication.loading,
+  account: authentication.account,
+  isAuthenticated: authentication.isAuthenticated,
+  errorMessage: authentication.errorMessage
 });
 
-export default LoginForm;
+const mapDispatchToProps = { login };
+
+type StateProps = ReturnType<typeof mapStateToProps>;
+type DispatchProps = typeof mapDispatchToProps;
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);
