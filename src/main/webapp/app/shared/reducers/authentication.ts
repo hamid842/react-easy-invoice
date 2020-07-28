@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import axios from 'axios';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
-import { AccountBalance } from '@material-ui/icons';
 
 const loginEndpoint = 'https://gateway.m1payall.com/einvoice/api/user-info/login';
 
@@ -33,12 +32,10 @@ export default (state: AuthenticationState = initialState, action: any): Authent
         ...state,
         loading: false,
         isAuthenticated: false,
-        errorMessage: action.payload
+        errorMessage: action.payload.error
       };
     case SUCCESS(ACTION_TYPES.LOGIN): {
-      const isAuthenticated = action.payload ? true : false;
-      // eslint-disable-next-line no-console
-      console.log(isAuthenticated);
+      const isAuthenticated = action.payload.data ? true : false;
       return {
         ...state,
         isAuthenticated,
@@ -46,7 +43,6 @@ export default (state: AuthenticationState = initialState, action: any): Authent
         account: action.payload.data.data
       };
     }
-
     default:
       return state;
   }
@@ -55,7 +51,7 @@ export default (state: AuthenticationState = initialState, action: any): Authent
 // Action
 export const displayAuthError = (message: any) => ({ type: ACTION_TYPES.ERROR_MESSAGE, message });
 
-export const login = (phoneNumber: any, password: any) => async (dispatch: any) => {
+export const login = (phoneNumber: any, password: any) => async (dispatch: any, getState: any) => {
   const requestBody = {
     phoneNumber,
     password

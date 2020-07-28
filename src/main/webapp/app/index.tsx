@@ -17,12 +17,21 @@ const store = initStore();
 const actions = bindActionCreators({ clearAuthentication }, store.dispatch);
 setupAxiosInterceptors(() => actions.clearAuthentication('login.error.unauthorized'));
 
-ReactDOM.render(
-  <Provider store={store}>
-    <div>
-      {devTools}
-      <App />
-    </div>
-  </Provider>,
-  document.getElementById('root')
-);
+const rootEl = document.getElementById('root');
+
+const render = (Component: any) =>
+  // eslint-disable-next-line react/no-render-return-value
+  ReactDOM.render(
+    <ErrorBoundary>
+      <Provider store={store}>
+        <div>
+          {/* If this slows down the app in dev disable it and enable when required  */}
+          {devTools}
+          <Component />
+        </div>
+      </Provider>
+    </ErrorBoundary>,
+    rootEl
+  );
+
+render(AppComponent);

@@ -7,6 +7,10 @@ import { Person, Lock, VisibilityOff, Visibility } from '@material-ui/icons';
 import { connect } from 'react-redux';
 import { login } from 'app/shared/reducers/authentication';
 import { IRootState } from 'app/shared/reducers';
+import axios from 'axios';
+
+// Endpoint
+const loginEndpoint = 'https://gateway.m1payall.com/einvoice/api/user-info/login';
 
 const CssTextField = withStyles({
   root: {
@@ -28,12 +32,10 @@ const ColorButton = withStyles((theme: Theme) => ({
   }
 }))(Button);
 
-export interface ILoginProps extends StateProps, DispatchProps {}
-
-const LoginForm = (props: ILoginProps) => {
-  // const { loginStore } = useStore();
-  const { account, isAuthenticated, loading, errorMessage } = props;
+const LoginForm = (props: any) => {
   const history = useHistory();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const [userInfo, setUserInfo] = useState({
     userName: '',
     password: '',
@@ -52,15 +54,35 @@ const LoginForm = (props: ILoginProps) => {
     event.preventDefault();
   };
 
-  const handleLogin = () => {
-    props.login(userInfo.userName, userInfo.password);
-    // eslint-disable-next-line no-console
-    console.log(isAuthenticated);
+  const handleLogin = async () => {
+    setLoading(true);
+    const requestBody = {
+      phoneNumber: userInfo.userName,
+      password: userInfo.password
+    };
+    await axios
+      .post(loginEndpoint, requestBody, { headers: { 'Content-Type': 'application/json' } })
+      .then(res => {
+        const status = res.status;
+        // eslint-disable-next-line no-constant-condition
+        if (status === 200 || 201) {
+          history.push('/dashboard');
+          toast.success(`You are logged in as user ${res.data.data.fullName}`);
+        }
+        setLoading(false);
+      })
+      .catch(err => {
+        setLoading(false);
+        const message = err.response.data.error;
+        setError(message);
+        toast.error(message);
+      });
   };
+
   return (
     <>
       <form noValidate={false}>
-        <Grid container spacing={errorMessage ? 4 : 5} justify="center">
+        <Grid container spacing={error ? 4 : 5} justify="center">
           <Grid item xs={12}>
             <Grid container spacing={1} alignItems="flex-end" justify="center">
               <Grid item>
@@ -112,7 +134,7 @@ const LoginForm = (props: ILoginProps) => {
             </Grid>
           </Grid>
           <Grid item style={{ color: 'red', textAlign: 'center' }} xs={12}>
-            {errorMessage}
+            {error}
           </Grid>
           <Grid item>
             <ColorButton
@@ -131,16 +153,4 @@ const LoginForm = (props: ILoginProps) => {
   );
 };
 
-const mapStateToProps = ({ authentication }: IRootState) => ({
-  loading: authentication.loading,
-  account: authentication.account,
-  isAuthenticated: authentication.isAuthenticated,
-  errorMessage: authentication.errorMessage
-});
-
-const mapDispatchToProps = { login };
-
-type StateProps = ReturnType<typeof mapStateToProps>;
-type DispatchProps = typeof mapDispatchToProps;
-
-export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);
+export default LoginForm;
