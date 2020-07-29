@@ -17,7 +17,6 @@ import ViewUserGroups from './modules/pages/user-management/ViewUserGroups';
 import ViewUsers from './modules/pages/user-management/ViewUsers';
 import { makeStyles } from '@material-ui/core/styles';
 import 'react-toastify/dist/ReactToastify.css';
-import 'react-toastify/dist/ReactToastify.min.css';
 
 const useStyles = makeStyles({
   root: {

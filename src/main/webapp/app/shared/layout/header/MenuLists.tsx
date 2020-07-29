@@ -1,7 +1,5 @@
 import React, { FC } from 'react';
 import { useHistory } from 'react-router-dom';
-// import { useStore } from 'app/mobx/stores/store';
-// import { observer } from 'mobx-react-lite';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { List, ListItem, ListItemIcon, ListItemText, Collapse } from '@material-ui/core';
 import {
@@ -17,11 +15,13 @@ import {
   LooksOne,
   CreditCard
 } from '@material-ui/icons';
-// import LoginStore from 'app/mobx/stores/LoginStore';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
+      '& .Mui-disabled': {
+        display: 'none'
+      },
       color: 'white',
       width: '100%',
       maxWidth: 360
@@ -32,8 +32,8 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+const role = localStorage.getItem('role');
 const MenuLists = (props: any) => {
-  // const { loginStore } = useStore();
   const classes = useStyles();
   const history = useHistory();
   const [openSubscriptions, setOpenSubscriptions] = React.useState(false);
@@ -163,11 +163,7 @@ const MenuLists = (props: any) => {
           </List>
         </Collapse>
         {/* User Management */}
-        <ListItem
-          button
-          onClick={() => setOpenManagement(!openManagement)}
-          // disabled={loginStore.loggedInUser.role === 'ROLE_BILLER' ? false : true}
-        >
+        <ListItem button onClick={() => setOpenManagement(!openManagement)} disabled={role === 'ROLE_BILLER' ? false : true}>
           <ListItemIcon>
             <RecentActors style={{ color: 'white' }} onClick={handleDrawerOpen} />
           </ListItemIcon>

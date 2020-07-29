@@ -4,9 +4,6 @@ import { toast } from 'react-toastify';
 import { Theme, withStyles } from '@material-ui/core/styles';
 import { TextField, Button, Grid, InputAdornment, IconButton, CircularProgress } from '@material-ui/core';
 import { Person, Lock, VisibilityOff, Visibility } from '@material-ui/icons';
-import { connect } from 'react-redux';
-import { login } from 'app/shared/reducers/authentication';
-import { IRootState } from 'app/shared/reducers';
 import axios from 'axios';
 
 // Endpoint
@@ -32,7 +29,7 @@ const ColorButton = withStyles((theme: Theme) => ({
   }
 }))(Button);
 
-const LoginForm = (props: any) => {
+const LoginForm = () => {
   const history = useHistory();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -68,14 +65,15 @@ const LoginForm = (props: any) => {
         if (status === 200 || 201) {
           history.push('/dashboard');
           toast.success(`You are logged in as user ${res.data.data.fullName}`);
+          localStorage.setItem('role', res.data.role);
         }
         setLoading(false);
       })
       .catch(err => {
         setLoading(false);
         const message = err.response.data.error;
-        setError(message);
-        toast.error(message);
+        setError('Oops!' + message);
+        toast.error('Oops!' + message);
       });
   };
 

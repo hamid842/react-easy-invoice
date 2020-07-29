@@ -66,6 +66,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   drawerClose: {
     background: '#008272',
+    paddingLeft: '5px',
     marginTop: '30px',
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
