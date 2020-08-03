@@ -12,10 +12,10 @@ const loginEndpoint = 'https://gateway.m1payall.com/einvoice/api/user-info/login
 const CssTextField = withStyles({
   root: {
     '& label.Mui-focused': {
-      color: '#00ddc2'
+      color: '#008272'
     },
     '& .MuiInput-underline:after': {
-      borderBottomColor: '#00ddc2'
+      borderBottomColor: '#008272'
     }
   }
 })(TextField);

@@ -1,7 +1,5 @@
 {
   "compilerOptions": {
-    "noImplicitThis": true,
-    "strictNullChecks": true,
     "jsx": "react",
     "target": "es6",
     "module": "esnext",
@@ -10,10 +8,10 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "removeComments": false,
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "suppressImplicitAnyIndexErrors": true,
     "outDir": "build/resources/main/static/app",
-    "lib": ["es2015", "es6", "es2017", "dom", "esnext.asynciterable"],
+    "lib": ["es2015", "es2017", "dom"],
     "types": ["webpack-env", "jest"],
     "allowJs": true,
     "checkJs": false,

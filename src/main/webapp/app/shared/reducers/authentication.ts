@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
 import axios from 'axios';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 
@@ -14,7 +13,7 @@ const initialState = {
   loading: false,
   isAuthenticated: false,
   account: {} as any,
-  errorMessage: null
+  errorMessage: null as any
 };
 
 export type AuthenticationState = Readonly<typeof initialState>;
@@ -38,6 +37,7 @@ export default (state: AuthenticationState = initialState, action: any): Authent
       const isAuthenticated = action.payload.data ? true : false;
       return {
         ...state,
+        ...action.payload,
         isAuthenticated,
         loading: false,
         account: action.payload.data.data
