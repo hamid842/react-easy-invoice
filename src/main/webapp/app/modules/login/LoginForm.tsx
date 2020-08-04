@@ -7,7 +7,7 @@ import { Person, Lock, VisibilityOff, Visibility } from '@material-ui/icons';
 import axios from 'axios';
 
 // Endpoint
-const loginEndpoint = 'https://gateway.m1payall.com/einvoice/api/user-info/login';
+export const loginEndpoint = 'https://gateway.m1payall.com/einvoice/api/user-info/login';
 
 const CssTextField = withStyles({
   root: {
