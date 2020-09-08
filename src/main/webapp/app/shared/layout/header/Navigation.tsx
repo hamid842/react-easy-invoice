@@ -8,9 +8,11 @@ import { IRootState } from 'app/shared/reducers';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import MenuLists from './MenuLists';
+import AdminMenuList from './AdminMenuList';
+import BillerMenuList from './BillerMenuList';
 
 const drawerWidth = 270;
+const role = localStorage.getItem('role');
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -143,7 +145,14 @@ const Navigation = (props: any) => {
               </Box>
             </Grid>
             <Grid item xs={2}>
-              <Button color="inherit" className={classes.logout} onClick={() => history.push('/')}>
+              <Button
+                color="inherit"
+                className={classes.logout}
+                onClick={() => {
+                  localStorage.removeItem('role');
+                  history.push('/');
+                }}
+              >
                 Logout
               </Button>
             </Grid>
@@ -170,7 +179,13 @@ const Navigation = (props: any) => {
           </IconButton>
         </div>
         <Divider variant="middle" classes={{ root: classes.dividerColor }} />
-        <MenuLists handleDrawerOpen={handleDrawerOpen} />
+        {role === 'ROLE_ADMIN' && <AdminMenuList handleDrawerOpen={handleDrawerOpen} />}
+        {role === 'ROLE_BILLER' && <BillerMenuList handleDrawerOpen={handleDrawerOpen} />}
+        {/* {role === 'ROLE_ADMIN' ? (
+          <AdminMenuList handleDrawerOpen={handleDrawerOpen} />
+        ) : (
+          <BillerMenuList handleDrawerOpen={handleDrawerOpen} />
+        )} */}
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />

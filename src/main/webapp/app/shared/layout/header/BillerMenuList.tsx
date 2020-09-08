@@ -1,20 +1,8 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { List, ListItem, ListItemIcon, ListItemText, Collapse } from '@material-ui/core';
-import {
-  ExpandLess,
-  ExitToApp,
-  RecentActors,
-  ExpandMore,
-  Subscriptions,
-  Pageview,
-  Receipt,
-  Create,
-  GroupWork,
-  LooksOne,
-  CreditCard
-} from '@material-ui/icons';
+import { ExpandLess, ExitToApp, ExpandMore, Subscriptions, Pageview, Receipt, Create, GroupWork, LooksOne } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -32,16 +20,13 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const role = localStorage.getItem('role');
-const MenuLists = (props: any) => {
+const BillerMenuList = (props: any) => {
   const classes = useStyles();
   const history = useHistory();
   const [openSubscriptions, setOpenSubscriptions] = React.useState(false);
   const [openInvoices, setOpenInvoices] = React.useState(false);
   const [openGroup, setOpenGroup] = React.useState(false);
   const [openUnit, setOpenUnit] = React.useState(false);
-  const [openManagement, setOpenManagement] = React.useState(false);
-  const [openBiller, setOpenBiller] = React.useState(false);
 
   const { handleDrawerOpen } = props;
 
@@ -138,56 +123,14 @@ const MenuLists = (props: any) => {
             </ListItem>
           </List>
         </Collapse>
-        {/* Biller Management */}
-        <ListItem button onClick={() => setOpenBiller(!openBiller)}>
-          <ListItemIcon>
-            <CreditCard style={{ color: 'white' }} onClick={handleDrawerOpen} />
-          </ListItemIcon>
-          <ListItemText primary="Biller Management" />
-          {openBiller ? <ExpandLess /> : <ExpandMore />}
-        </ListItem>
-        <Collapse in={openBiller} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            <ListItem button className={classes.nested} onClick={() => history.push('/dashboard/view-billers')}>
-              <ListItemIcon>
-                <Pageview style={{ color: 'white' }} />
-              </ListItemIcon>
-              <ListItemText primary="View Billers" />
-            </ListItem>
-            <ListItem button className={classes.nested} onClick={() => history.push('/dashboard/register-biller')}>
-              <ListItemIcon>
-                <Create style={{ color: 'white' }} />
-              </ListItemIcon>
-              <ListItemText primary="Register Biller" />
-            </ListItem>
-          </List>
-        </Collapse>
-        {/* User Management */}
-        <ListItem button onClick={() => setOpenManagement(!openManagement)} disabled={role === 'ROLE_BILLER' ? false : true}>
-          <ListItemIcon>
-            <RecentActors style={{ color: 'white' }} onClick={handleDrawerOpen} />
-          </ListItemIcon>
-          <ListItemText primary="User Management" />
-          {openManagement ? <ExpandLess /> : <ExpandMore />}
-        </ListItem>
-        <Collapse in={openManagement} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            <ListItem button className={classes.nested} onClick={() => history.push('/dashboard/view-users')}>
-              <ListItemIcon>
-                <Pageview style={{ color: 'white' }} />
-              </ListItemIcon>
-              <ListItemText primary="View Users" />
-            </ListItem>
-            <ListItem button className={classes.nested} onClick={() => history.push('/dashboard/view-user-groups')}>
-              <ListItemIcon>
-                <Pageview style={{ color: 'white' }} />
-              </ListItemIcon>
-              <ListItemText primary="View User Groups" />
-            </ListItem>
-          </List>
-        </Collapse>
         {/* Logout */}
-        <ListItem button onClick={() => history.push('/')}>
+        <ListItem
+          button
+          onClick={() => {
+            localStorage.removeItem('role');
+            history.push('/');
+          }}
+        >
           <ListItemIcon>
             <ExitToApp style={{ color: 'white' }} onClick={handleDrawerOpen} />
           </ListItemIcon>
@@ -198,4 +141,4 @@ const MenuLists = (props: any) => {
   );
 };
 
-export default MenuLists;
+export default BillerMenuList;

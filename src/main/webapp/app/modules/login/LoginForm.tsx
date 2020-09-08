@@ -65,7 +65,9 @@ const LoginForm = () => {
         if (status === 200 || 201) {
           history.push('/dashboard');
           toast.success(`You are logged in as user ${res.data.data.fullName}`);
-          localStorage.setItem('role', res.data.role);
+          localStorage.setItem('role', res.data.data.role);
+          // eslint-disable-next-line no-console
+          console.log(localStorage.setItem('token', res.headers));
         }
         setLoading(false);
       })

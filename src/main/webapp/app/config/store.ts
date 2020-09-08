@@ -21,6 +21,7 @@ const composedMiddlewares = (middlewares: never[]) =>
     ? compose(applyMiddleware(...defaultMiddlewares, ...middlewares), DevTools.instrument())
     : compose(applyMiddleware(...defaultMiddlewares, ...middlewares));
 
-const initialize = (initialState?: IRootState, middlewares = []) => createStore(reducer, initialState, composedMiddlewares(middlewares));
+const initialize = (initialState?: IRootState, middlewares: any = []) =>
+  createStore(reducer, initialState, composedMiddlewares(middlewares));
 
 export default initialize;
